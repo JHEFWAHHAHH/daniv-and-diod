@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ефектне з'явлення тексту з феєрверками</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .text-container {
+            font-size: 48px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            color: #fff;
+            position: relative;
+            z-index: 10;
+        }
+
+        .show-text {
+            opacity: 1;
+        }
+
+        /* Стиль для контейнера феєрверків */
+        #fireworks-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Щоб не заважати користувачам */
+        }
+
+        .firework {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            animation: explode 1.5s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                width: 5px;
+                height: 5px;
+                opacity: 1;
+            }
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-container">
+        <span class="fade-in-text">данів і діод вчив фізику</span>
+    </div>
+
+    <div id="fireworks-container"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const textContainer = document.querySelector('.text-container');
+            const fireworksContainer = document.getElementById('fireworks-container');
+
+            // Показуємо текст з затримкою
+            setTimeout(() => {
+                textContainer.classList.add('show-text');
+                // Запускаємо феєрверки
+                launchFireworks();
+            }, 500);
+
+            function launchFireworks() {
+                for (let i = 0; i < 20; i++) {
+                    createFirework();
+                }
+            }
+
+            function createFirework() {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+
+                // Випадкове положення для феєрверку
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+
+                firework.style.left = `${x}px`;
+                firework.style.top = `${y}px`;
+
+                fireworksContainer.appendChild(firework);
+
+                // Видаляємо феєрверк після анімації
+                setTimeout(() => {
+                    firework.remove();
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
